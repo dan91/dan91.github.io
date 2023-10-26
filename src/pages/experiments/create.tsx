@@ -158,6 +158,7 @@ export const CreateOrEdit: React.FC<CreateOrEditProps> = ({ children, type, foot
 
   const { mutate } = useUpdate<IExperiment>()
 
+
   const setStatus = (id: string, status: string) => {
     mutate({
       resource: EXPERIMENT_COLLECTION,

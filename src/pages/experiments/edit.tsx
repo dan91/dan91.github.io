@@ -9,7 +9,6 @@ export const ExperimentEdit: React.FC<IResourceComponentsProps> = () => {
 
   const experiment = queryResult?.data?.data
 
-  // console.log(experiment)
   return (
     <ExperimentMaster experimentToEdit={experiment} />
   );
