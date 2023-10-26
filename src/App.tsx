@@ -92,7 +92,7 @@ function App() {
                           // collapsed is a boolean value that indicates whether the <Sidebar> is collapsed or not
                           collapsed={collapsed}
                           icon={<AppIcon />}
-                          text="FeedInsights"
+                          text=""
                         />
                       )}
                       Header={() => <Header sticky />}
