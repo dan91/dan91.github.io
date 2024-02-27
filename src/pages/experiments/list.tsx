@@ -4,9 +4,9 @@ import {
     useUpdate,
     useGo,
 } from "@refinedev/core";
-import { TagField, useTable, List } from "@refinedev/antd";
-import { CheckCircleOutlined, EditOutlined, PauseOutlined, PlayCircleOutlined, SyncOutlined } from "@ant-design/icons";
-import { Table, Button, Space } from "antd";
+import { TagField, useTable, List, DeleteButton } from "@refinedev/antd";
+import { CheckCircleOutlined, DeleteOutlined, DownCircleOutlined, DownOutlined, EditOutlined, PauseOutlined, PlayCircleOutlined, SyncOutlined } from "@ant-design/icons";
+import { Table, Button, Space, MenuProps, Dropdown } from "antd";
 
 
 import { IExperiment } from "../../interfaces";
@@ -61,6 +61,8 @@ export const ExperimentList: React.FC<IResourceComponentsProps> = () => {
                 return buttonListPaused(value)
             case ExperimentStatus.completed:
                 return buttonListCompleted(value)
+            case ExperimentStatus.draft:
+                return buttonListDraft(value)
 
             default: return []
         }
@@ -68,7 +70,7 @@ export const ExperimentList: React.FC<IResourceComponentsProps> = () => {
 
 
 
-    const buttonListCompleted = (value: string) => []
+    const buttonListCompleted = (value: string) => [<DeleteButton type="link" hideText />]
 
     const buttonListPaused = (value: string) => [<Button icon={<PlayCircleOutlined />}
         onClick={() => { setStatus(value, ExperimentStatus.published) }}>
@@ -76,9 +78,11 @@ export const ExperimentList: React.FC<IResourceComponentsProps> = () => {
             onClick={() => { setStatus(value, ExperimentStatus.completed) }}>
         Set as Completed</Button>]
 
-    const buttonListPublished = (value: string) => [<Button icon={<PauseOutlined />}
+    const buttonListPublished = (value: string) => [<><Button icon={<PauseOutlined />}
         onClick={() => { setStatus(value, ExperimentStatus.paused) }}>
-        Pause</Button>]
+        Pause</Button><Button onClick={() => go({ to: { action: 'edit', resource: EXPERIMENT_COLLECTION, id: value } })}>Edit</Button></>]
+
+    const buttonListDraft = (value: string) => [<DeleteButton type="link" hideText />]
 
     return (
         <List>

@@ -6,12 +6,16 @@ import {
 } from "@refinedev/core";
 import {
   Create,
+  DeleteButton,
   Edit,
   useForm,
   useStepsForm,
 } from "@refinedev/antd";
 import {
   Button,
+  Dropdown,
+  MenuProps,
+  Space,
   Spin,
   Steps,
   Tooltip,
@@ -26,7 +30,7 @@ import { StimulusList } from "./create/stimuli/stimulus_list";
 import { GroupTrialForm } from "./create/groups-trials/group_trial_form";
 import { Permission, Role } from "@refinedev/appwrite";
 import { useGetTrialsByExperimentId } from "../../utility/api";
-import { EyeOutlined } from "@ant-design/icons";
+import { DeleteOutlined, DownOutlined, EyeOutlined } from "@ant-design/icons";
 import { ExperimentStatus } from "./show";
 
 interface ExperimentMasterProps {
@@ -168,10 +172,14 @@ export const CreateOrEdit: React.FC<CreateOrEditProps> = ({ children, type, foot
     })
   }
 
-  return type == "edit" ? <Edit title={'Edit ' + experiment?.name ?? 'Experiment'}
-    headerButtons={<Tooltip title={trials.length > 0 ? '' : 'Add trials to publish the experiment.'}><Button disabled={trials.length > 0 ? false : true} onClick={() => {
-      setStatus(experiment?.id ?? '', ExperimentStatus.published);
-      go({ to: { action: 'show', resource: EXPERIMENT_COLLECTION, id: experiment?.id ?? '' } });
-    }} icon={<EyeOutlined />}>Publish</Button></Tooltip>} footerButtons={footerButtons} > {children}</Edit >
-    : <Create footerButtons={footerButtons} > {children}</Create >
+  if (type == "edit") {
+
+    return <Edit title={'Edit ' + experiment?.name ?? 'Experiment'}
+      headerButtons={<><Tooltip title={trials.length > 0 ? '' : 'Add trials to publish the experiment.'}><Button disabled={trials.length > 0 ? false : true} onClick={() => {
+        setStatus(experiment?.id ?? '', ExperimentStatus.published);
+        go({ to: { action: 'show', resource: EXPERIMENT_COLLECTION, id: experiment?.id ?? '' } });
+      }} icon={<EyeOutlined />}>Publish</Button></Tooltip><DeleteButton type="link" hideText /></>} footerButtons={footerButtons} > {children}</Edit >
+  } else {
+    return <Create footerButtons={footerButtons} > {children}</Create >
+  }
 }
