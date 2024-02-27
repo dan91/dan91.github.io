@@ -85,7 +85,7 @@ function App() {
             <Routes>
               <Route
                 element={
-                  <Authenticated fallback={<CatchAllNavigate to="/login" />}>
+                  <Authenticated key={1} fallback={<CatchAllNavigate to="/login" />}>
                     <ThemedLayoutV2
                       Title={({ collapsed }) => (
                         <ThemedTitleV2
@@ -132,7 +132,7 @@ function App() {
               </Route>
               <Route
                 element={
-                  <Authenticated fallback={<Outlet />}>
+                  <Authenticated key={2} fallback={<Outlet />}>
                     <NavigateToResource />
                   </Authenticated>
                 }
