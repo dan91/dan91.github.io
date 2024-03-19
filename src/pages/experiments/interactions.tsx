@@ -1,8 +1,8 @@
-import { HttpError, LogicalFilter, useList, } from "@refinedev/core";
+import { HttpError, useList, } from "@refinedev/core";
 import { List, Table, Tag } from "antd";
-import { IExperimentParticipation, IInteraction } from "../../interfaces/index"
+import { IGroup, IInteraction, ITrial } from "../../interfaces/index"
 import { useTable } from "@refinedev/antd";
-import { EXPERIMENT_PARTICIPATIONS, INTERACTION_COLLECTION } from "../../utility";
+import { GROUP_COLLECTION, INTERACTION_COLLECTION, TRIAL_COLLECTION } from "../../utility";
 import { CommentOutlined, LikeOutlined, ShareAltOutlined } from "@ant-design/icons";
 
 interface InteractionsProps {
@@ -12,15 +12,18 @@ interface InteractionsProps {
 
 
 export const Interactions: React.FC<InteractionsProps> = ({ experimentId }) => {
-  const { data: participationsData } = useList<IExperimentParticipation>({ resource: EXPERIMENT_PARTICIPATIONS, filters: [{ field: 'experimentId', operator: 'eq', value: experimentId }] })
-  const participations = participationsData?.data ?? []
-  const filters: LogicalFilter[] = participations.map((e) => { return { field: 'userId', operator: 'eq', value: e.userId } })
+  const { data: groupsData } = useList<IGroup>({ resource: GROUP_COLLECTION, filters: [{ field: 'experimentId', operator: 'eq', value: experimentId }] })
+  const groups = groupsData?.data ?? []
+
+  const { data: trialsData } = useList<ITrial>({ resource: TRIAL_COLLECTION, filters: [{ field: 'groupId', operator: 'contains', value: groups.map((g) => g.id) }] })
+  const trials = trialsData?.data ?? []
+
 
   const { tableProps } = useTable<IInteraction, HttpError>({
     liveMode: 'auto',
     resource: INTERACTION_COLLECTION, filters: {
-      initial: [
-        { key: 'parent', operator: 'or', value: filters }
+      permanent: [
+        { field: 'trialId', operator: 'contains', value: trials.map((t) => t.id) }
       ]
     }, sorters: { initial: [{ field: '$createdAt', order: 'desc' }] }
   });
