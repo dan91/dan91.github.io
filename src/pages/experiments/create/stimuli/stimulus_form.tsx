@@ -1,4 +1,4 @@
-import { Col, Form, Input, List, Row, Upload, Typography, Checkbox, Spin, Button } from "antd"
+import { Col, Form, Input, List, Row, Upload, Typography, Checkbox, Spin, Button, InputNumber } from "antd"
 import { IStimuliSet, IStimulus } from "../../../../interfaces"
 import { FormProps } from "antd/lib"
 import { STIMULI_SET_COLLECTION, STIMULUS_IMAGE_BUCKET, USER_IMAGE_BUCKET, normalizeFile, storage } from "../../../../utility"
@@ -7,14 +7,14 @@ const { Text, } = Typography;
 
 import { DeleteButton, EditButton, SaveButton, useCheckboxGroup, useSimpleList } from "@refinedev/antd"
 import { useCreate, useUpdate } from "@refinedev/core"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { PlusOutlined } from "@ant-design/icons"
 interface StimulusFormProps {
     formProps: FormProps
     experimentId?: string
 }
 export const StimulusForm: React.FC<StimulusFormProps> = ({ formProps, experimentId }) => {
-    const { listProps, queryResult } = useSimpleList<IStimuliSet>(
+    const { listProps } = useSimpleList<IStimuliSet>(
         { resource: STIMULI_SET_COLLECTION, filters: { permanent: [{ field: 'experimentId', operator: 'eq', value: experimentId }] } });
 
 
@@ -174,7 +174,7 @@ export const StimulusForm: React.FC<StimulusFormProps> = ({ formProps, experimen
                     label="Likes"
                     name="likes"
                 >
-                    <Input />
+                    <InputNumber />
                 </Form.Item>
             </Col>
             <Col md={8}>
@@ -182,7 +182,7 @@ export const StimulusForm: React.FC<StimulusFormProps> = ({ formProps, experimen
                     label="Comments"
                     name="comments"
                 >
-                    <Input />
+                    <InputNumber />
                 </Form.Item>
             </Col>
             <Col md={8}>
@@ -190,7 +190,7 @@ export const StimulusForm: React.FC<StimulusFormProps> = ({ formProps, experimen
                     label="Shares"
                     name="shares"
                 >
-                    <Input />
+                    <InputNumber />
                 </Form.Item>
             </Col>
         </Row>
